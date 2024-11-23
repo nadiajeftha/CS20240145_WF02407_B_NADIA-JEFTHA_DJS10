@@ -33,10 +33,12 @@ function App() {
     <div>
       {error && <h1>{error}</h1>}
 
-      {posts.map((post) => (
+      {posts.map((post, index) => (
         <div key={post.id}>
           <h1>Posts</h1>
-          <h2>{post.title}</h2>
+          <h2>
+            {index + 1}.{post.title}
+          </h2>
           <p>{post.body}</p>
         </div>
       ))}
