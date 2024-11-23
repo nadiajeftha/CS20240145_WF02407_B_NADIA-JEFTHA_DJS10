@@ -7,43 +7,35 @@ function App() {
 
   useEffect(() => {
     //fetch posts
-    const fetchBlogPosts = async () => {
-      try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/posts"
-        );
-
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => {
         //checks if datta was fetched
         if (!response.ok) {
           throw new Error("DATA FETCHING FAILED");
         }
-
-        const data = await response.json();
-        setPosts(data);
-      } catch (err) {
-        //stores the error
-        setError(err.message);
-      }
-    };
-    fetchBlogPosts();
+        return response.json();
+      })
+      .then((data) => setPosts(data))
+      .catch((err) => setError(err.message));
   }, []);
 
   //displays content on the page
   return (
     <div>
-      {error && <h1>{error}</h1>}
-
-      {posts.map((post, index) => (
-        <div key={post.id}>
-          <h1>Posts</h1>
-          <h2>
-            {index + 1}.{post.title}
-          </h2>
-          <p>{post.body}</p>
-        </div>
-      ))}
+      {error ? (
+        <h1>DATA FETCHING FAILED</h1>
+      ) : (
+        posts.map((post, index) => (
+          <div key={post.id}>
+            <h1>Posts</h1>
+            <h2>
+              {index + 1}.{post.title}
+            </h2>
+            <p>{post.body}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 }
-
 export default App;
